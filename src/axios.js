@@ -1,11 +1,16 @@
 import axios from "axios";
+import Cookie from 'js-cookie';
 
-const domain = "http://localhost:3000";
+const domain = "https://spendlittle.herokuapp.com/api/v1";
+
+const token = Cookie.get('burgerProjectToken');
 
 const api = axios.create({
   baseURL: domain,
   headers: {
-    authorization: localStorage.getItem("accessToken")
+    "Authorization": `Bearer ${token}`,
+    "Accept": 'application/json',
+    "Content-Type":  'application/json'
   }
 });
 

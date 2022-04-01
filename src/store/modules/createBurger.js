@@ -13,20 +13,20 @@ const createBurger = {
     },
     actions: {
         requestBreads: async ({ commit }) => {
-            await api.get(`/ingredientes`).then((response) => {
-                const breads = response.data.paes;
+            await api.get(`/breads`).then((response) => {
+                const breads = response.data.content;
                 commit("addBreads", breads);
             });
         },
         requestBeefs: async ({ commit }) => {
-            await api.get(`/ingredientes`).then((response) => {
-                const beefs = response.data.carnes;
+            await api.get(`/meats`).then((response) => {
+                const beefs = response.data.content;
                 commit("addBeefs", beefs);
             });
         },
         requestOptionals: async ({ commit }) => {
-            await api.get(`/ingredientes`).then((response) => {
-                const optionals = response.data.opcionais;
+            await api.get(`/optionals`).then((response) => {
+                const optionals = response.data.content;
                 commit("addOptionals", optionals);
             });
         },
@@ -34,8 +34,8 @@ const createBurger = {
             return new Promise(async (resolve, reject) => {
                 await api.post(`/burgers`, dataBurger).then(response => {
                     resolve(response)
-                }).catch(err => {
-                    reject(err)
+                }).catch(error => {
+                    reject(error.response.data.message)
                 })
             });
         },

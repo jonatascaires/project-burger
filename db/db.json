@@ -77,5 +77,29 @@
       "tipo": "Finalizado"
     }
   ],
-  "burgers": []
+  "burgers": [
+    {
+      "name": "Jonatas",
+      "bread": "3 Queijos",
+      "beef": "Picanha",
+      "optional": [
+        "Bacon",
+        "Cheddar"
+      ],
+      "status": "Solicitado",
+      "id": 1
+    },
+    {
+      "name": "Jonatas",
+      "bread": "Italiano Branco",
+      "beef": "Alcatra",
+      "optional": [
+        "Bacon",
+        "Tomate"
+      ],
+      "status": "Em produção",
+      "id": 2
+    }
+  ],
+  "users": []
 }

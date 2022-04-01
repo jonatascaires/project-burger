@@ -26,8 +26,8 @@ const requestBurger = {
             return new Promise(async (resolve, reject) => {
                 await api.delete(`/burgers/${id}`).then(response => {
                     resolve(response)
-                }).catch(err => {
-                    reject(err)
+                }).catch(error => {
+                    reject(error.response.data.message)
                 })
             });
         },
@@ -35,8 +35,8 @@ const requestBurger = {
             return new Promise(async (resolve, reject) => {
                 await api.patch(`/burgers/${data.id}`, {status: data.status}).then(response => {
                     resolve(response)
-                }).catch(err => {
-                    reject(err)
+                }).catch(error => {
+                    reject(error.response.data.message)
                 })
             });
         },

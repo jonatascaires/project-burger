@@ -20,8 +20,8 @@
                         <option
                             v-for="breads in returnBreads"
                             :key="breads.id"
-                            :value="breads.tipo"
-                        >{{ breads.tipo }}</option>
+                            :value="breads.name"
+                        >{{ breads.name }}</option>
                     </select>
                 </div>
                 <div class="input-container">
@@ -31,8 +31,8 @@
                         <option
                             v-for="beefs in returnBeefs"
                             :key="beefs.id"
-                            :value="beefs.tipo"
-                        >{{ beefs.tipo }}</option>
+                            :value="beefs.name"
+                        >{{ beefs.name }}</option>
                     </select>
                 </div>
                 <div id="optional-container" class="input-container">
@@ -46,9 +46,9 @@
                             type="checkbox"
                             name="optional"
                             v-model="optional"
-                            :value="optionals.tipo"
+                            :value="optionals.name"
                         />
-                        <span>{{ optionals.tipo }}</span>
+                        <span>{{ optionals.name }}</span>
                     </div>
                 </div>
                 <div class="input-container">
