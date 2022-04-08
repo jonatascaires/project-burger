@@ -32,7 +32,7 @@ const createBurger = {
         },
         saveBurger: ({ commit }, dataBurger) => {
             return new Promise(async (resolve, reject) => {
-                await api.post(`/burgers`, dataBurger).then(response => {
+                await api.post(`/hamburger`, dataBurger).then(response => {
                     resolve(response)
                 }).catch(error => {
                     reject(error.response.data.message)

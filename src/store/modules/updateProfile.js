@@ -1,11 +1,10 @@
 import api from "../../axios";
 
-const requestProfile = {
+const updateProfile = {
     state: {},
     getters: {},
     actions: {
         updateProfile: ({ commit }, data) => {
-            console.log('chamou')
             return new Promise(async (resolve, reject) => {
                 await api.patch('/account/me', data).then(response => {
                     resolve(response)
@@ -18,4 +17,4 @@ const requestProfile = {
     mutations: {}
 }
 
-export default requestProfile;
+export default updateProfile;

@@ -40,7 +40,6 @@ export default {
     getPdf() {
       this.pdfdata = pdf.createLoadingTask('/ebook/ebook1.pdf');
       this.pdfdata.then(pdfvuer => {
-        console.log(pdfvuer)
         this.numPages = pdfvuer.numPages;
       })
     }

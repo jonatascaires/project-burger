@@ -2,36 +2,26 @@
     <div>
         <Message :msg="msg" v-show="msg" />
         <div>
-            <form id="burger-form" @submit="createBurger">
-                <div class="input-container">
-                    <label for="name">Nome do cliente:</label>
-                    <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        v-model="name"
-                        placeholder="Digite o seu nome"
-                    />
-                </div>
+            <form id="burger-form" @submit.stop.prevent="createBurger">
                 <div class="input-container">
                     <label for="bread">Escolha o pão:</label>
-                    <select id="bread" name="bread" v-model="bread">
-                        <option value>Selecione o seu pão</option>
+                    <select id="bread" name="bread" v-model="bread_id">
+                        <option :value="0">Selecione o seu pão</option>
                         <option
                             v-for="breads in returnBreads"
                             :key="breads.id"
-                            :value="breads.name"
+                            :value="breads.id"
                         >{{ breads.name }}</option>
                     </select>
                 </div>
                 <div class="input-container">
                     <label for="beef">Escolha a carne do seu Burger:</label>
-                    <select id="beef" name="beef" v-model="beef">
-                        <option value>Selecione o tipo de carne</option>
+                    <select id="beef" name="beef" v-model="beef_id">
+                        <option :value="0">Selecione o tipo de carne</option>
                         <option
                             v-for="beefs in returnBeefs"
                             :key="beefs.id"
-                            :value="beefs.name"
+                            :value="beefs.id"
                         >{{ beefs.name }}</option>
                     </select>
                 </div>
@@ -45,8 +35,8 @@
                         <input
                             type="checkbox"
                             name="optional"
-                            v-model="optional"
-                            :value="optionals.name"
+                            v-model="optional_id"
+                            :value="optionals.id"
                         />
                         <span>{{ optionals.name }}</span>
                     </div>
@@ -70,43 +60,38 @@ export default {
     },
     data() {
         return {
-            bread: "",
-            beef: "",
-            optional: [],
-            name: null,
+            bread_id: 0,
+            beef_id: 0,
+            optional_id: [],
             msg: null
         };
     },
-    computed: mapGetters(["returnBreads", "returnBeefs", "returnOptionals"]),
-    mounted() {
-        this.requestBreads();
-        this.requestBeefs();
-        this.requestOptionals();
+    async mounted() {
+        await this.requestBreads();
+        await this.requestBeefs();
+        await this.requestOptionals();
     },
+    computed: mapGetters(["returnBreads", "returnBeefs", "returnOptionals"]),
     methods: {
         ...mapActions(["requestBreads", "requestBeefs", "requestOptionals", "saveBurger"]),
-        createBurger(event) {
-            event.preventDefault();
+        createBurger() {
             const dataBurger = {
-                name: this.name,
-                bread: this.bread,
-                beef: this.beef,
-                optional: Array.from(this.optional),
-                status: "Solicitado"
+                breads_id: this.bread_id,
+                meats_id: this.beef_id,
+                optionals: Array.from(this.optional_id),
             };
             this.saveBurger(dataBurger)
                 .then(response => {
-                    this.msg = `Pedido de Nº ${response.data.id} realizado com sucesso!`
+                    this.msg = `Pedido de Nº ${response.data} realizado com sucesso!`
                 })
                 .catch(err => console.log(err));
             this.clearForm();
         },
         clearForm() {
-            this.bread = "",
-                this.beef = "",
-                this.optional = [],
-                this.name = null;
             setTimeout(() => this.msg = "", 3000);
+            this.bread_id = "";
+            this.beef_id = "";
+            this.optional_id = [];
         }
     },
     components: { Message }

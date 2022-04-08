@@ -10,7 +10,7 @@
                         type="text"
                         id="name"
                         name="name"
-                        v-model="returnUser.name"
+                        v-model="name"
                         placeholder="Digite o seu nome"
                         required
                     />
@@ -21,7 +21,7 @@
                         type="text"
                         id="email"
                         name="email"
-                        v-model="returnUser.email"
+                        v-model="email"
                         placeholder="Digite o seu e-mail"
                         required
                     />
@@ -42,7 +42,7 @@
                         type="text"
                         id="address"
                         name="address"
-                        v-model="returnUser.address"
+                        v-model="address"
                         placeholder="Digite o seu endereço"
                         required
                     />
@@ -53,7 +53,7 @@
                         type="number"
                         id="number"
                         name="number"
-                        v-model="returnUser.number"
+                        v-model="number"
                         placeholder="Digite o número"
                         required
                     />
@@ -64,7 +64,7 @@
                         type="text"
                         id="complement"
                         name="complement"
-                        v-model="returnUser.complement"
+                        v-model="complement"
                         placeholder="Digite se tem complemento"
                     />
                 </div>
@@ -74,7 +74,7 @@
                         type="text"
                         id="phone"
                         name="phone"
-                        v-model="returnUser.phone"
+                        v-model="phone"
                         placeholder="Digite o seu nº de contato"
                         required
                     />
@@ -107,11 +107,24 @@ export default {
         }
     },
     computed: mapGetters(["returnUser"]),
-    mounted() { 
-        this.requestProfile()
+    mounted() {
+        this.loadingDataProfile()
+    },
+    watch: {
+        "returnUser.name": function (oldVal, newVal) {
+            this.loadingDataProfile()
+        },
     },
     methods: {
-        ...mapActions(["requestProfile", "updateProfile"]),
+        ...mapActions(["updateProfile", "dataUserRecover"]),
+        loadingDataProfile() {
+            this.name = this.returnUser.name
+            this.email = this.returnUser.email
+            this.address = this.returnUser.address
+            this.number = this.returnUser.number
+            this.complement = this.returnUser.complement
+            this.phone = this.returnUser.phone
+        },
         registerNewUser() {
             const data = {
                 name: this.name,
@@ -130,9 +143,10 @@ export default {
             }
             this.updateProfile(data)
                 .then(async response => {
+                    this.dataUserRecover()
                     this.msg = "Dados do usuário atualizado!"
                     setTimeout(() => this.msg = "", 3000)
-                    this.requestProfile()
+                    
                 })
                 .catch(error => {
                     this.msg = error

@@ -11,7 +11,7 @@ const requestBurger = {
     },
     actions: {
         requestBurgers: async ({ commit }) => {
-            await api.get(`/burgers`).then((response) => {
+            await api.get(`/hamburger`).then((response) => {
                 const burgers = response.data;
                 commit("addBurgers", burgers);
             });
@@ -24,7 +24,7 @@ const requestBurger = {
         },
         deleteBurger: ({ commit }, id) => {
             return new Promise(async (resolve, reject) => {
-                await api.delete(`/burgers/${id}`).then(response => {
+                await api.patch(`/hamburger/${id}`).then(response => {
                     resolve(response)
                 }).catch(error => {
                     reject(error.response.data.message)

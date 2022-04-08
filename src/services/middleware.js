@@ -9,9 +9,12 @@ export default {
             next('/login');
         }
 
-        store.dispatch("dataUserRecover").then().catch(err => next('/login'))
+        await store.dispatch("dataUserRecover").catch(err => {
+            Cookie.remove('burgerProjectToken')
+            next('/login')
+        })
 
-        next();
+        next()
 
     }
 }

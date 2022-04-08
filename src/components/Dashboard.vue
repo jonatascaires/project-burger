@@ -4,32 +4,45 @@
         <div>
             <div id="burger-table-heading">
                 <div class="order-id">#:</div>
-                <div>Cliente:</div>
+                <div>Data:</div>
                 <div>Pão:</div>
                 <div>Carne:</div>
                 <div>Opcionais:</div>
-                <div>Ações:</div>
+                <div>Status:</div>
             </div>
         </div>
         <div id="burger-table-rows">
-            <div v-for="burgers in returnBurgers" :key="burgers.id" class="burger-table-row">
+            <div
+                v-for="burgers in returnBurgers.content"
+                :key="burgers.id"
+                class="burger-table-row"
+            >
                 <div class="order-number">{{ burgers.id }}</div>
-                <div>{{ burgers.name }}</div>
-                <div>{{ burgers.bread }}</div>
-                <div>{{ burgers.beef }}</div>
+                <div>{{ format(new Date(burgers.created_at), 'dd/MM/yyyy HH:mm:ss') }}</div>
+                <div>{{ burgers.breads }}</div>
+                <div>{{ burgers.meats }}</div>
                 <div>
                     <ul>
                         <li
-                            v-for="optionals in burgers.optional"
+                            v-for="optionals in burgers.optionals"
                             :key="optionals.length"
-                        >{{ optionals }}</li>
+                        >{{ optionals.optional }}</li>
                     </ul>
                 </div>
                 <div>
-                    <select
+                    {{ burgers.status_orders }}
+                    <button
+                        class="delete-btn"
+                        @click="removeBurger(burgers.id)"
+                        v-show="burgers.status_orders === 'Solicitado'"
+                    >Cancelar</button>
+                </div>
+                <div>
+                    <!-- <select
                         name="status"
                         class="status"
                         @change="updateStatusBurger($event.target.value, burgers.id)"
+                        v-show="returnUser.level === 'admin'"
                     >
                         <option
                             v-for="status in returnStatus"
@@ -37,8 +50,8 @@
                             :value="status.tipo"
                             :selected="burgers.status == status.tipo"
                         >{{ status.tipo }}</option>
-                    </select>
-                    <button class="delete-btn" @click="removeBurger(burgers.id)">Cancelar</button>
+                    </select>-->
+                    <!-- <button class="delete-btn" @click="removeBurger(burgers.id)" v-show="burgers.status_orders === 'Solicitado'">Cancelar</button> -->
                 </div>
             </div>
         </div>
@@ -48,18 +61,20 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import Message from './Message.vue';
+import { format } from 'date-fns'
 
 export default {
     name: "Dashboard",
     data() {
         return {
-            msg: null
+            msg: null,
+            format
         }
     },
     components: {
         Message
     },
-    computed: mapGetters(["returnBurgers", "returnStatus"]),
+    computed: mapGetters(["returnBurgers", "returnStatus", "returnUser"]),
     mounted() {
         this.requestBurgers();
         this.requestStatus();

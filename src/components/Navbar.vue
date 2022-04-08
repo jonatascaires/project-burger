@@ -24,8 +24,8 @@ export default {
     methods: {
         ...mapActions(["userLogout"]),
         logout() {
-            this.userLogout()
             Cookie.remove('burgerProjectToken')
+            this.userLogout()
         }
     }
 }

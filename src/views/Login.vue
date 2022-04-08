@@ -48,21 +48,19 @@ export default {
     }
   },
   computed: mapGetters([""]),
-  mounted() {
-
-  },
   methods: {
     ...mapActions(["authenticateUser"]),
-    authenticate() {
+    async authenticate() {
       const data = {
         email: this.email,
         password: this.password
       }
-      this.authenticateUser(data)
-        .then(async response => {
+      await this.authenticateUser(data)
+        .then(response => {
+          Cookie.remove('burgerProjectToken')
           this.msg = "Usuário autenticado!"
           setTimeout(() => this.msg = "", 3000)
-          await Cookie.set('burgerProjectToken', response.data.user.token);
+          Cookie.set('burgerProjectToken', response.data.user.token);
           this.$router.push('/')
         })
         .catch(err => {
